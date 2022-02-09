@@ -31,6 +31,7 @@
 	</form>
 </div>
 <script type="text/javascript">
+	//senting to middle 
 	var MID_PATH="https://afsacess4.njit.edu/~va237/CS490Alpha/postrequest.php";
 </script>
 
