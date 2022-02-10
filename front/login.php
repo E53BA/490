@@ -16,12 +16,12 @@ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
+$json = json_decode($response, true);
 
 if (empty($response)) {
 	echo "No response :(<br>";
 } else {
     // Process the response
-    $json = json_decode($response, true);
     switch ($json["type"]) {
         case "student":
             echo "<h1>Welcome, student!</h1><br>";
