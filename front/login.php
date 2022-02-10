@@ -17,8 +17,6 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 
-curl_close($ch);
-
 if (empty($response)) {
 	echo "No response :(<br>";
 } else {
@@ -36,6 +34,7 @@ if (empty($response)) {
             break;
     }
 }
+curl_close($ch);
 
 
 ?>
