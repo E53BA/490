@@ -13,7 +13,7 @@ function curl($url, $data) {
 //Custom curl data
 $dataCust = $_POST;
 
-//Njit curl data
+//login curl data
 $dataNjit = array (
 "ucid" => $_POST["username"],
 "pass" => $_POST["password"]
@@ -21,13 +21,10 @@ $dataNjit = array (
 
 //Send both curl calls
 $respCust = curl('https://afsaccess4.njit.edu/~rv356/CS490alpha/alpha.php', $dataCust);
-$respNjit = curl('https://aevitepr2.njit.edu/MyHousing/login.cfm', $dataNjit);
 
 //Build response data
-$regex = "/Residence Life myHousing Login/";
 $response = array(
 "custom" => json_decode($respCust, true)["login"],
-"njit" => !preg_match($regex, $respNjit)
 );
 
 //Set resposne data type
