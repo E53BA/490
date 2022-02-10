@@ -1,11 +1,11 @@
 <?php
 // Get PHP to report all errors
 error_reporting(E_ALL);
-
+$ch = curl_init();
 // making curl more modular
 function cURL_POST(string $url, string $username, string $password) : string {
     // Initalize curl resource
-    $ch = curl_init();
+    
 
     // Curl Setopt Info
     curl_setopt($ch, CURLOPT_URL, $url);
