@@ -1,7 +1,7 @@
 <?PHP
 
       $ch = curl_init(); //initialize curl
-      $beurl = "https://afsaccess4.njit.edu/~vs653/AlphaCS490/auth.php"; //url to back end .php
+      $beurl = "https://afsaccess4.njit.edu/~rv356/CS490alpha/alpha.php"; //url to back end .php
       
       $postdata = file_get_contents('php://input');
 
