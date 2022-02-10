@@ -1,34 +1,39 @@
 <?php
-//function for sendind curl calls
-function curl($url, $data) {
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$resp = curl_exec($ch);
-	curl_close($ch);
-	return $resp;
+// Get PHP to report all errors
+error_reporting(E_ALL);
+
+// making curl more modular
+function cURL_POST(string $url, string $username, string $password) : string {
+    // Initalize curl resource
+    $ch = curl_init();
+
+    // Curl Setopt Info
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,
+        http_build_query(
+            array(
+                "username" => $username,
+                "password" => $password,
+            )
+        )
+    );
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    // output response from curl
+    $output = curl_exec($ch);
+
+    // close curl resource to free system resources
+    curl_close($ch);
+
+    // return response from curl : string
+    return $output;
 }
 
-//Custom curl data
-$dataCust = $_POST;
+// sends $arr from php://input to curl backend
+$response = cURL_POST("https://afsaccess4.njit.edu/~rv356/CS490alpha/alpha.php", $_POST["username"], $_POST["password"]);
 
-//login curl data
-$dataNjit = array (
-"ucid" => $_POST["username"],
-"pass" => $_POST["password"]
-);
-
-//Send both curl calls
-$respCust = curl('https://afsaccess4.njit.edu/~rv356/CS490alpha/alpha.php', $dataCust);
-
-//Build response data
-$response = array(
-"custom" => json_decode($respCust, true)["login"],
-);
-
-//Set resposne data type
-header("Content-Type:application/json");
-//Send response
-echo json_encode($response);
+// Printing Output of $arr
+echo $response;
 ?>
