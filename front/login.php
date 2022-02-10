@@ -1,50 +1,41 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Login</title>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <div class="single-card">
-            <div class="card">
+<?php
 
-                <h1 class="card-title">Login</h1>
+$ch = curl_init();
 
-                <form action="" method="post">
-                    <label>Username:</label>
-                    <input type="text" name="username">
+curl_setopt($ch, CURLOPT_URL, "https://afsaccess4.njit.edu/~sk2662/CS490Alpha/testmiddle.php");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS,
+    http_build_query(
+        array(
+            "username" => $_POST["username"],
+            "password" => $_POST["password"],
+        )
+    )
+);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-                    <label>Password:</label>
-                    <input type="password" name="password">
+$response = curl_exec($ch);
 
-                    <button type="submit">Login</button>
+curl_close($ch);
 
-					<?php
-						if (!empty($_POST)) {
-							$data = array(
-							"username" => $_POST["username"],
-							"password" => $_POST["password"]
-							);
+if (empty($response)) {
+	echo "No response :(<br>";
+} else {
+    // Process the response
+    $json = json_decode($response, true);
+    switch ($json["type"]) {
+        case "student":
+            echo "<h1>Welcome, student!</h1><br>";
+            break;
+        case "teacher":
+            echo "<h1>Welcome, teacher!</h1><br>";
+            break;
+        default:
+            echo '<form action="../front-end/login.php" method="POST"> Username: <br><input type="text" name="username"><br> Password: <br><input type="text" name="password"><br> <input type="submit"> </form>';
+            break;
+    }
+}
 
-							$url = 'https://afsacess4.njit.edu/~sk2662/CS490Alpha/testmiddle.php';
-							$ch = curl_init($url);
-							$postData = http_build_query($data);
-							curl_setopt($ch, CURLOPT_POST, 1);
-							curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-							$response = json_decode(curl_exec($ch), true);
-							curl_close($ch);
 
-							if($response["custom"]) {
-								echo '<p class="card-content">logged in.</p>';
-							} else {
-								echo '<p class="card-content">failed to login.</p>';
-							}
-							
-						}
-					?>
-                </form>
-            </div>
-        </div>
-    </body>
-</html>
+?>
