@@ -1,38 +1,54 @@
-<head>
-	<meta charset="utf-8">
-	<link href="login.css" rel="stylesheet">
-	<script src="login_front.js" type="text/JavaScript"></script>
-</head>
-<body>
-<div id="login_div">
-	<form id="login" name="login" method="post" class="form-login">
-		<h1>WELCOME!</h1>
-		<p>Please log in using your UCID and password.</p>
-		<div class="dialog">
-		<table>
-			<tbody>
-				<tr class="prop">
-					<td class="name"><label for="login:username">UCID:</label></td>
-					<td class="value"><input id="login:username" type="text" name="login:username" class="form-login" size="30" placeholder="Username" required autofocus></td>
-				</tr>
-				<tr class="prop">
-					<td class="name"><label for="login:password">Password:</label></td>
-					<td class="value"><input id="login:password" type="password" name="login:password" class="form-login" size="30" placeholder="Password"></td>
-				</tr>
-				<tr>
-				<td></td>
-				<td><div class="button" style="margin: 1em 1em">
-					<input class="form-control" type="button" onclick="ajaxLoginFunction();" value="Login">
-				</div></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>
-	</form>
-</div>
-<script type="text/javascript">
-  //sending connection to middle
-	var MID_PATH="https://afsacess4.njit.edu/~va237/CS490Alpha/postrequest.php";
-</script>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div class="single-card">
+            <div class="card">
 
-<div id="ajaxDiv"></div>
+                <h1 class="card-title">Login</h1>
+
+                <form action="" method="post">
+                    <label>Username:</label>
+                    <input type="text" name="username">
+
+                    <label>Password:</label>
+                    <input type="password" name="password">
+
+                    <button type="submit">Login</button>
+
+					<?php
+						if (!empty($_POST)) {
+							$data = array(
+							"username" => $_POST["username"],
+							"password" => $_POST["password"]
+							);
+
+							$url = 'https://afsacess4.njit.edu/~sk2662/CS490Alpha/testmiddle.php';
+							$ch = curl_init($url);
+							$postData = http_build_query($data);
+							curl_setopt($ch, CURLOPT_POST, 1);
+							curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+							$response = json_decode(curl_exec($ch), true);
+							curl_close($ch);
+
+							if($response["custom"]) {
+								echo '<p class="card-content">Custom logged in.</p>';
+							} else {
+								echo '<p class="card-content">Custom failed to login.</p>';
+							}
+							if($response["njit"]) {
+								echo '<p class="card-content">NJIT logged in.</p>';
+							} else {
+								echo '<p class="card-content">NJIT failed to login.</p>';
+							}
+						}
+					?>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
