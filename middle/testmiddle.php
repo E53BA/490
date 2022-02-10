@@ -1,39 +1,22 @@
-<?php
-// Get PHP to report all errors
-error_reporting(E_ALL);
-$ch = curl_init();
-// making curl more modular
-function cURL_POST(string $url, string $username, string $password) : string {
-    // Initalize curl resource
-    
+<?PHP
 
-    // Curl Setopt Info
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,
-        http_build_query(
-            array(
-                "username" => $username,
-                "password" => $password,
-            )
-        )
-    );
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      $ch = curl_init(); //initialize curl
+      $beurl = "https://afsaccess4.njit.edu/~vs653/AlphaCS490/auth.php"; //url to back end .php
+      
+      $postdata = file_get_contents('php://input');
 
-    // output response from curl
-    $output = curl_exec($ch);
+      //set up url in curl 
+      curl_setopt($ch, CURLOPT_URL, $beurl);
+      //setting the return transfer to new
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      //Post in curl
+      curl_setopt($ch, CURLOPT_POST, true);
+           
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 
-    // close curl resource to free system resources
-    curl_close($ch);
-
-    // return response from curl : string
-    return $output;
-}
-
-// sends $arr from php://input to curl backend
-$response = cURL_POST("https://afsaccess4.njit.edu/~rv356/CS490alpha/alpha.php", $_POST["username"], $_POST["password"]);
-
-// Printing Output of $arr
-echo $response;
+      $reply = curl_exec($ch);
+     
+      curl_close($ch);
+     
+      echo $reply;
 ?>
