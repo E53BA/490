@@ -41,9 +41,9 @@
 								echo '<p class="card-content">Custom failed to login.</p>';
 							}
 							if($response["njit"]) {
-								echo '<p class="card-content">NJIT logged in.</p>';
+								echo '<p class="card-content">logged in.</p>';
 							} else {
-								echo '<p class="card-content">NJIT failed to login.</p>';
+								echo '<p class="card-content">failed to login. Try again! </p>';
 							}
 						}
 					?>
